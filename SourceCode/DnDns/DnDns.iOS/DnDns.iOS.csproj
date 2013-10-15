@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6F68E3AD-B80E-4980-8476-7ADDFFFF6672}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DnDns.iOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>DnDns.iOS</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="DnDns\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\DnDns\DnDns.csproj">
+      <Link>DnDns\DnDns.csproj</Link>
+    </None>
+    <None Include="..\DnDns\DnDns.csproj.vspscc">
+      <Link>DnDns\DnDns.csproj.vspscc</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\DnDns\DnsHelpers.cs">
+      <Link>DnDns\DnsHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Tools.cs">
+      <Link>DnDns\Tools.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Enums\NsClass.cs">
+      <Link>DnDns\Enums\NsClass.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Enums\NsFlags.cs">
+      <Link>DnDns\Enums\NsFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Enums\NsType.cs">
+      <Link>DnDns\Enums\NsType.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Enums\TcpServices.cs">
+      <Link>DnDns\Enums\TcpServices.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Enums\UdpServices.cs">
+      <Link>DnDns\Enums\UdpServices.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Query\DnsQueryBase.cs">
+      <Link>DnDns\Query\DnsQueryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Query\DnsQueryRequest.cs">
+      <Link>DnDns\Query\DnsQueryRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Query\DnsQueryResponse.cs">
+      <Link>DnDns\Query\DnsQueryResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\ARecord.cs">
+      <Link>DnDns\Records\ARecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\AaaaRecord.cs">
+      <Link>DnDns\Records\AaaaRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\AfsdbRecord.cs">
+      <Link>DnDns\Records\AfsdbRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\AtmaRecord.cs">
+      <Link>DnDns\Records\AtmaRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\BaseDnsRecord.cs">
+      <Link>DnDns\Records\BaseDnsRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\CNameRecord.cs">
+      <Link>DnDns\Records\CNameRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\HInfoRecord.cs">
+      <Link>DnDns\Records\HInfoRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\IDnsRecord.cs">
+      <Link>DnDns\Records\IDnsRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\IsdnRecord.cs">
+      <Link>DnDns\Records\IsdnRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\LocRecord.cs">
+      <Link>DnDns\Records\LocRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\MInfoRecord.cs">
+      <Link>DnDns\Records\MInfoRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\MbRecord.cs">
+      <Link>DnDns\Records\MbRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\MgRecord.cs">
+      <Link>DnDns\Records\MgRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\MrRecord.cs">
+      <Link>DnDns\Records\MrRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\MxRecord.cs">
+      <Link>DnDns\Records\MxRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\NsRecord.cs">
+      <Link>DnDns\Records\NsRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\PtrRecord.cs">
+      <Link>DnDns\Records\PtrRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\RecordFactory.cs">
+      <Link>DnDns\Records\RecordFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\RecordHeader.cs">
+      <Link>DnDns\Records\RecordHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\RpRecord.cs">
+      <Link>DnDns\Records\RpRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\RtRecord.cs">
+      <Link>DnDns\Records\RtRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\SoaRecord.cs">
+      <Link>DnDns\Records\SoaRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\SrvRecord.cs">
+      <Link>DnDns\Records\SrvRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\TSigRecord.cs">
+      <Link>DnDns\Records\TSigRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\TxtRecord.cs">
+      <Link>DnDns\Records\TxtRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\UnknownRecord.cs">
+      <Link>DnDns\Records\UnknownRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\WksRecord.cs">
+      <Link>DnDns\Records\WksRecord.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Records\X25Record.cs">
+      <Link>DnDns\Records\X25Record.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Security\IMessageSecurityProvider.cs">
+      <Link>DnDns\Security\IMessageSecurityProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\DnDns\Security\TsigMessageSecurityProvider.cs">
+      <Link>DnDns\Security\TsigMessageSecurityProvider.cs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>

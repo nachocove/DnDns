@@ -54,7 +54,7 @@ namespace DnDns.Query
 	{
         private static Random r = new Random();
 
-        private DnsPermission _dnsPermissions;
+        // private DnsPermission _dnsPermissions;
 
         private int _bytesSent = 0;
         private int _socketTimeout = 5000;
@@ -80,7 +80,7 @@ namespace DnDns.Query
         #region Constructors
         public DnsQueryRequest() 
 		{
-            _dnsPermissions = new DnsPermission(PermissionState.Unrestricted);
+            // FIXME _dnsPermissions = new DnsPermission(PermissionState.Unrestricted);
 
             // Construct the class with some defaults
             _transactionId = (ushort) r.Next();
@@ -197,7 +197,7 @@ namespace DnDns.Query
         public DnsQueryResponse Resolve(string dnsServer, string host, NsType queryType, NsClass queryClass, ProtocolType protocol, IMessageSecurityProvider messageSecurityProvider) 
 		{
             // Do stack walk and Demand all callers have DnsPermission.
-            _dnsPermissions.Demand();
+            // FIXME _dnsPermissions.Demand();
 
             byte[] bDnsQuery = this.BuildDnsRequest(host, queryType, queryClass, protocol, messageSecurityProvider);
 			
