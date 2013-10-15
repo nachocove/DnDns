@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="NachoPlatform.Android">
+      <HintPath>..\..\..\..\NachoPlatform\NachoPlatform\NachoPlatform.Android\bin\Release\NachoPlatform.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />

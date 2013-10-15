@@ -1,11 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="DnDns/Tools.cs">
+    <Files>
+      <File FileName="DnDns/Query/DnsQueryResponse.cs" Line="1" Column="1" />
+      <File FileName="DnDns/Tools.cs" Line="128" Column="58" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="DnDns.Android" expanded="True" />
-          <Node name="DnDns.iOS" expanded="True" selected="True" />
+          <Node name="DnDns.Android" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="DnDns" expanded="True">
+              <Node name="Query" expanded="True" />
+              <Node name="Tools.cs" selected="True" />
+            </Node>
+          </Node>
+          <Node name="DnDns.iOS" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

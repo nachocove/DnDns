@@ -35,6 +35,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
+    <Reference Include="NachoPlatform.iOS">
+      <HintPath>..\..\..\..\NachoPlatform\NachoPlatform\NachoPlatform.iOS\bin\Release\NachoPlatform.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

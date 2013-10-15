@@ -37,7 +37,6 @@ using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-
 using DnDns.Enums;
 
 namespace DnDns
@@ -69,7 +68,6 @@ namespace DnDns
         public static bool IsPlatformLinuxUnix()
         {
              int p = (int)Environment.OSVersion.Platform;
-            
             // Test for Unix/Linux OS
              if (p == 4 || p == 128)
              {
@@ -126,6 +124,13 @@ namespace DnDns
 
         public static string DiscoverUnixDnsServerAddress()
         {
+            if (NachoPlatform.OsCode.Android == NachoPlatform.Device.Instance.BaseOs ()) {
+                string[] serverAddrs = NachoPlatform.Dns.Instance.NameServers ();
+                if (null != serverAddrs) {
+                    return serverAddrs [0];
+                }
+                return string.Empty;
+            }
             if (System.IO.File.Exists("/etc/resolv.conf"))
             {
                 using (System.IO.StreamReader sr = new System.IO.StreamReader("/etc/resolv.conf"))
