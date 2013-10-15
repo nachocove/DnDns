@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketDnDnsLookup", "PocketDnDnsLookup\PocketDnDnsLookup.csproj", "{8112FE7A-6F72-48A7-A088-5AC8FA221985}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketDnDns", "PocketDnDns\PocketDnDns.csproj", "{53089CAB-AE06-4BE6-9E23-CCCC03730EEA}"
+EndProject
+Project("{B900F1C2-3D47-4FEC-85B3-04AAF18C3634}") = "PocketDnDns CAB Project", "PocketDnDns CAB Project\PocketDnDns CAB Project.vddproj", "{A3A46E58-020F-4381-B7C7-DCD882D0469D}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs05.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PocketDnDnsLookup\\PocketDnDnsLookup.csproj
+		SccProjectName1 = PocketDnDnsLookup
+		SccLocalPath1 = PocketDnDnsLookup
+		SccProjectUniqueName2 = PocketDnDns\\PocketDnDns.csproj
+		SccProjectName2 = PocketDnDns
+		SccLocalPath2 = PocketDnDns
+		SccProjectUniqueName3 = PocketDnDns\u0020CAB\u0020Project\\PocketDnDns\u0020CAB\u0020Project.vddproj
+		SccProjectName3 = PocketDnDns\u0020CAB\u0020Project
+		SccLocalPath3 = PocketDnDns\u0020CAB\u0020Project
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8112FE7A-6F72-48A7-A088-5AC8FA221985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8112FE7A-6F72-48A7-A088-5AC8FA221985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8112FE7A-6F72-48A7-A088-5AC8FA221985}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8112FE7A-6F72-48A7-A088-5AC8FA221985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8112FE7A-6F72-48A7-A088-5AC8FA221985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8112FE7A-6F72-48A7-A088-5AC8FA221985}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{53089CAB-AE06-4BE6-9E23-CCCC03730EEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53089CAB-AE06-4BE6-9E23-CCCC03730EEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53089CAB-AE06-4BE6-9E23-CCCC03730EEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53089CAB-AE06-4BE6-9E23-CCCC03730EEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3A46E58-020F-4381-B7C7-DCD882D0469D}.Debug|Any CPU.ActiveCfg = Debug
+		{A3A46E58-020F-4381-B7C7-DCD882D0469D}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
