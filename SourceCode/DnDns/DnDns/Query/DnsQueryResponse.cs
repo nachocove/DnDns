@@ -95,7 +95,7 @@ namespace DnDns.Query
 			return queryRequest;
 		}
 
-		internal void ParseResponse(byte[] recvBytes, ProtocolType protocol)
+		internal void ParseResponse(byte[] recvBytes)
 		{
 			MemoryStream memoryStream = new MemoryStream(recvBytes);
             byte[] flagBytes = new byte[2];

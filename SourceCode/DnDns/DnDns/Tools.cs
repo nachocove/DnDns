@@ -36,6 +36,9 @@ using System;
 using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
+#if __ANDROID__ || __IOS__
+using System.Runtime.InteropServices;
+#endif
 using System.Net.Sockets;
 using DnDns.Enums;
 
@@ -122,15 +125,28 @@ namespace DnDns
 			return ans.ToString();
 		}
 
+#if __ANDROID__
+        [DllImport("libc.so")]
+        private static extern int __system_property_get(string key, byte[] value);
+        private const int PROP_MAX_VALUE = 91;
+#endif
         public static string DiscoverUnixDnsServerAddress()
         {
-            if (NachoPlatform.OsCode.Android == NachoPlatform.Device.Instance.BaseOs ()) {
-                string[] serverAddrs = NachoPlatform.Dns.Instance.NameServers ();
-                if (null != serverAddrs) {
-                    return serverAddrs [0];
-                }
+#if __ANDROID__
+            byte[] value = new byte[PROP_MAX_VALUE];
+            var status = __system_property_get("net.dns1", value);
+            // NOTE: if we ever will retry on failure, Android also has a "net.dns2".
+            if (0 >= status)
+            {
                 return string.Empty;
             }
+            return System.Text.Encoding.UTF8.GetString(value);
+#pragma warning disable 162
+#endif
+#if __IOS__
+            return string.Empty;
+#pragma warning disable 162
+#endif
             if (System.IO.File.Exists("/etc/resolv.conf"))
             {
                 using (System.IO.StreamReader sr = new System.IO.StreamReader("/etc/resolv.conf"))
@@ -185,6 +201,22 @@ namespace DnDns
             return null;
         }
 
+#if __IOS__
+        [DllImport("__Internal")]
+        private static extern int res_query (string host, int queryClass, int queryType, byte[] answer, int anslen);
+        public const bool HasSystemDns = true;
+#else
+        public const bool HasSystemDns = false;
+#endif
+        // NOTE: the order of class & type w/libresolv are the opposite of this DnDns package!
+        public static int SystemResQuery(string host, NsClass dnsClass, NsType dnsType, byte[] answer)
+        {
+#if __IOS__
+            return res_query(host, (int)dnsClass, (int)dnsType, answer, answer.Length);
+#else
+            return -1;
+#endif
+        }
         //public static uint ByteToUInt(byte[] theByte)
         //{
         //    uint l = 0;

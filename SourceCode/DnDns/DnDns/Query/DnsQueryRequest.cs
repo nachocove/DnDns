@@ -40,6 +40,7 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Security.Permissions;
 using System.Text;
+using System.Threading.Tasks;
 
 using DnDns.Enums;
 using DnDns.Records;
@@ -107,7 +108,8 @@ namespace DnDns.Query
 			switch (_nsType) 
 			{
 				case NsType.PTR:
-					IPAddress queryIP = IPAddress.Parse(host);
+                    // IPAddress.Parse as input validation.
+					IPAddress.Parse(host);
 
 					// pointer should be translated as follows
 					// 209.115.22.3 -> 3.22.115.209.in-addr.arpa
@@ -143,6 +145,27 @@ namespace DnDns.Query
 			return ms.ToArray();
 		}
 
+        private static string PickDnsServer()
+        {
+            string dnsServer = string.Empty;
+
+            // Test for Unix/Linux OS
+            if (Tools.IsPlatformLinuxUnix())
+            {
+                // NOTE: iOS will fail to find a DNS server. That's okay.
+                dnsServer = Tools.DiscoverUnixDnsServerAddress();
+            }
+            else
+            {
+                IPAddressCollection dnsServerCollection = Tools.DiscoverDnsServerAddresses();
+                if (dnsServerCollection.Count != 0)
+                {
+                    dnsServer = dnsServerCollection [0].ToString ();
+                }
+            }
+            return dnsServer;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -156,29 +179,14 @@ namespace DnDns.Query
             return Resolve(host, queryType, queryClass, protocol, null);
         }
 
+        public Task<DnsQueryResponse> ResolveAsync(string host, NsType queryType, NsClass queryClass, ProtocolType protocol)
+        {
+            return Task.Factory.StartNew<DnsQueryResponse> (() => Resolve (host, queryType, queryClass, protocol));
+        }
+
         public DnsQueryResponse Resolve(string host, NsType queryType, NsClass queryClass, ProtocolType protocol, TsigMessageSecurityProvider provider)
         {
-            string dnsServer = string.Empty;
-
-            // Test for Unix/Linux OS
-            if (Tools.IsPlatformLinuxUnix())
-            {
-                dnsServer = Tools.DiscoverUnixDnsServerAddress();
-            }
-            else
-            {
-                IPAddressCollection dnsServerCollection = Tools.DiscoverDnsServerAddresses();
-                if (dnsServerCollection.Count == 0)
-                    throw new Exception("Couldn't detect local DNS Server.");
-
-                dnsServer = dnsServerCollection[0].ToString();
-            }
-
-            if (String.IsNullOrEmpty(dnsServer))
-                throw new Exception("Couldn't detect local DNS Server.");
-
-            return Resolve(dnsServer, host, queryType, queryClass, protocol, provider);
-
+            return Resolve(PickDnsServer(), host, queryType, queryClass, protocol, provider);
         }
 
         /// <summary>
@@ -199,14 +207,29 @@ namespace DnDns.Query
             // Do stack walk and Demand all callers have DnsPermission.
             // FIXME _dnsPermissions.Demand();
 
+            DnsQueryResponse dnsQR = new DnsQueryResponse();
+            // Try a native query if it is supported.
+            if (Tools.HasSystemDns)
+                // CS0162 will fire when HasSystemDns is a constant.
+#pragma warning disable 162
+            {
+                // See https://www.dns-oarc.net/oarc/services/replysizetest - 4k likely plenty.
+                byte[] answer = new byte[4096];
+                if (0 < Tools.SystemResQuery (host, queryClass, queryType, answer)) {
+                    dnsQR.ParseResponse (answer);
+                    return dnsQR;
+                }
+                else
+                {
+                    /* FIXME - COMPILER BUG. throw new Exception ("System resolve query failed.")*/;
+                }
+            }
+            byte[] recvBytes = null;
             byte[] bDnsQuery = this.BuildDnsRequest(host, queryType, queryClass, protocol, messageSecurityProvider);
 			
-			// Connect to DNS server and get the record for the current server.
-			IPHostEntry ipe = System.Net.Dns.GetHostEntry(dnsServer);
-			IPAddress ipa = ipe.AddressList[0];
-			IPEndPoint ipep = new IPEndPoint(ipa, (int)UdpServices.Domain);
+            IPAddress[] ipas = System.Net.Dns.GetHostAddresses (dnsServer);
+			IPEndPoint ipep = new IPEndPoint(ipas[0], (int)UdpServices.Domain);
 
-            byte[] recvBytes = null;
 
             switch (protocol)
             {
@@ -227,10 +250,8 @@ namespace DnDns.Query
             }
 
             Trace.Assert(recvBytes != null, "Failed to retrieve data from the remote DNS server.");
-
-			DnsQueryResponse dnsQR = new DnsQueryResponse();
-			
-			dnsQR.ParseResponse(recvBytes, protocol);
+            			
+			dnsQR.ParseResponse(recvBytes);
 
 			return dnsQR;
 		}
