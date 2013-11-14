@@ -59,7 +59,15 @@ namespace DnDns.Query
 
         private int _bytesSent = 0;
         private int _socketTimeout = 5000;
-        
+        private UdpClient _udpClient;
+
+        /// <summary>
+        /// Access to the Underlying UdpClient so that a Close() will cancel an Async request.
+        /// </summary>
+        public UdpClient UdpClient
+        {
+            get { return _udpClient; }
+        }
         /// <summary>
         /// The number of bytes sent to query the DNS Server.
         /// </summary>
@@ -259,19 +267,20 @@ namespace DnDns.Query
         private byte[] ResolveUdp(byte[] bDnsQuery, IPEndPoint ipep)
         {
             // UDP messages, data size = 512 octets or less
-            UdpClient udpClient = new UdpClient();
+            _udpClient = new UdpClient();
             byte[] recvBytes = null;
 
             try
             {
-                udpClient.Client.ReceiveTimeout = _socketTimeout;
-                udpClient.Connect(ipep);
-                udpClient.Send(bDnsQuery, bDnsQuery.Length);
-                recvBytes = udpClient.Receive(ref ipep);
+                _udpClient.Client.ReceiveTimeout = _socketTimeout;
+                _udpClient.Connect(ipep);
+                _udpClient.Send(bDnsQuery, bDnsQuery.Length);
+                recvBytes = _udpClient.Receive(ref ipep);
             }
             finally
             {
-                udpClient.Close();
+                _udpClient.Close();
+                _udpClient = null;
             }
             return recvBytes;
         }

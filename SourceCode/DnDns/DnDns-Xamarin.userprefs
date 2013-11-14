@@ -1,11 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="DnDns/Query/DnsQueryRequest.cs">
-    <Files>
-      <File FileName="DnDns/Query/DnsQueryRequest.cs" Line="179" Column="21" />
-      <File FileName="DnDns/Tools.cs" Line="1" Column="1" />
-      <File FileName="DnDns/Query/DnsQueryResponse.cs" Line="1" Column="1" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
@@ -13,7 +8,7 @@
             <Node name="References" expanded="True" />
             <Node name="DnDns" expanded="True">
               <Node name="Query" expanded="True">
-                <Node name="DnsQueryRequest.cs" selected="True" />
+                <Node name="DnsQueryResponse.cs" selected="True" />
               </Node>
             </Node>
           </Node>
