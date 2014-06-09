@@ -189,7 +189,16 @@ namespace DnDns.Query
 
         public Task<DnsQueryResponse> ResolveAsync(string host, NsType queryType, NsClass queryClass, ProtocolType protocol)
         {
-            return Task.Factory.StartNew<DnsQueryResponse> (() => Resolve (host, queryType, queryClass, protocol));
+            return Task.Factory.StartNew<DnsQueryResponse> (() => {
+                DnsQueryResponse response;
+                try {
+                    response = Resolve (host, queryType, queryClass, protocol);
+                    return response;
+                } catch {
+                    // FIXME - uplevel this code to work with cancellation token.
+                    return null;
+                }
+            });
         }
 
         public DnsQueryResponse Resolve(string host, NsType queryType, NsClass queryClass, ProtocolType protocol, TsigMessageSecurityProvider provider)
