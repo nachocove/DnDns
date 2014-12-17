@@ -96,8 +96,15 @@ namespace DnDns.Query
 		}
 
 		public void ParseResponse(byte[] recvBytes)
-		{
-			MemoryStream memoryStream = new MemoryStream(recvBytes);
+        {
+            if (null != recvBytes) {
+                ParseResponse (recvBytes, recvBytes.Length);
+            }
+        }
+
+        public void ParseResponse(byte[] recvBytes, int length)
+        {
+			MemoryStream memoryStream = new MemoryStream(recvBytes, 0, length);
             byte[] flagBytes = new byte[2];
             byte[] transactionId = new byte[2];
 			byte[] questions = new byte[2];
@@ -107,7 +114,7 @@ namespace DnDns.Query
             byte[] nsType = new byte[2];
             byte[] nsClass = new byte[2];
 
-			this._bytesReceived = recvBytes.Length;
+			this._bytesReceived = length;
 
 			// Parse DNS Response
 			memoryStream.Read(transactionId, 0, 2);
