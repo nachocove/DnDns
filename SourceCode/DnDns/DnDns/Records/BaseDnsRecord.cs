@@ -298,8 +298,11 @@ namespace DnDns.Records
                         Debug.Assert(next < 0xc0, "Offset cannot be greater then 0xc0.");
                         byte[] buffer = new byte[next];
                         ms.Read(buffer, 0, (int)next);
-                        sb.Append(Encoding.ASCII.GetString(buffer) + ".");
+                        sb.Append(Encoding.ASCII.GetString(buffer));
                         next = (uint)ms.ReadByte();
+                        if (next != 0x00) {
+                            sb.Append (".");
+                        }
                         Trace.WriteLine("0x" + next.ToString("x2"));
                         break;
                     }

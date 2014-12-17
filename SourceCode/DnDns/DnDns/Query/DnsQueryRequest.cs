@@ -190,10 +190,8 @@ namespace DnDns.Query
         public Task<DnsQueryResponse> ResolveAsync(string host, NsType queryType, NsClass queryClass, ProtocolType protocol)
         {
             return Task.Factory.StartNew<DnsQueryResponse> (() => {
-                DnsQueryResponse response;
                 try {
-                    response = Resolve (host, queryType, queryClass, protocol);
-                    return response;
+                    return Resolve (host, queryType, queryClass, protocol);
                 } catch {
                     // FIXME - uplevel this code to work with cancellation token.
                     return null;
@@ -232,21 +230,20 @@ namespace DnDns.Query
             {
                 // See https://www.dns-oarc.net/oarc/services/replysizetest - 4k likely plenty.
                 byte[] answer = new byte[4096];
-                if (0 < Tools.SystemResQuery (host, queryClass, queryType, answer)) {
-                    dnsQR.ParseResponse (answer);
+                int answerSize = Tools.SystemResQuery (host, queryClass, queryType, answer);
+                if (0 < answerSize) {
+                    dnsQR.ParseResponse (answer, answerSize);
                     return dnsQR;
-                }
-                else
-                {
-                    /* FIXME - COMPILER BUG. throw new Exception ("System resolve query failed.")*/;
+                } else {
+                    return null;
                 }
             }
+
             byte[] recvBytes = null;
             byte[] bDnsQuery = this.BuildDnsRequest(host, queryType, queryClass, protocol, messageSecurityProvider);
 			
             IPAddress[] ipas = System.Net.Dns.GetHostAddresses (dnsServer);
 			IPEndPoint ipep = new IPEndPoint(ipas[0], (int)UdpServices.Domain);
-
 
             switch (protocol)
             {
@@ -267,7 +264,7 @@ namespace DnDns.Query
             }
 
             Trace.Assert(recvBytes != null, "Failed to retrieve data from the remote DNS server.");
-            			
+
 			dnsQR.ParseResponse(recvBytes);
 
 			return dnsQR;

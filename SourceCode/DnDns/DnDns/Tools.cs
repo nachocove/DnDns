@@ -202,7 +202,7 @@ namespace DnDns
         }
 
 #if __IOS__
-        [DllImport("__Internal")]
+        [DllImport("__Internal", EntryPoint = "res_9_query")]
         private static extern int res_query (string host, int queryClass, int queryType, byte[] answer, int anslen);
         public const bool HasSystemDns = true;
 #else
