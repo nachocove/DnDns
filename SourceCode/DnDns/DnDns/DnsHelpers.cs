@@ -28,7 +28,7 @@ namespace DnDns
             {
                 if (lowerCase)
                 {
-                    sb.Append(char.ToLower(name[i]));
+                    sb.Append(char.ToLowerInvariant(name[i]));
                 }
                 else
                 {
