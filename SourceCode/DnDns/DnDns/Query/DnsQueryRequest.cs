@@ -243,7 +243,16 @@ namespace DnDns.Query
             byte[] bDnsQuery = this.BuildDnsRequest(host, queryType, queryClass, protocol, messageSecurityProvider);
 			
             IPAddress[] ipas = System.Net.Dns.GetHostAddresses (dnsServer);
-			IPEndPoint ipep = new IPEndPoint(ipas[0], (int)UdpServices.Domain);
+            IPEndPoint ipep = null;
+            foreach (var addr in ipas) {
+                if (addr.AddressFamily == AddressFamily.InterNetwork) {
+                    ipep = new IPEndPoint(addr, (int)UdpServices.Domain);
+                    break;
+                }
+            }
+            if (null == ipep) {
+                throw new Exception (string.Format ("No IPv4 address found for hostname {0}", dnsServer));
+            }
 
             switch (protocol)
             {
