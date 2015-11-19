@@ -36,6 +36,10 @@ using System;
 using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Collections.Generic;
+using System.Linq;
+
+
 #if __ANDROID__ || __IOS__
 using System.Runtime.InteropServices;
 #endif
@@ -130,21 +134,23 @@ namespace DnDns
         private static extern int __system_property_get(string key, byte[] value);
         private const int PROP_MAX_VALUE = 91;
 #endif
-        public static string DiscoverUnixDnsServerAddress()
+        public static string[] DiscoverUnixDnsServerAddresses()
         {
+            var servers = new List<string> ();
 #if __ANDROID__
-            byte[] value = new byte[PROP_MAX_VALUE];
-            var status = __system_property_get("net.dns1", value);
-            // NOTE: if we ever will retry on failure, Android also has a "net.dns2".
-            if (0 >= status)
-            {
-                return string.Empty;
+            foreach (var prop in new []{"net.dns1", "net.dns2", "net.dns3", "net.dns4"}) {
+                byte[] value = new byte[PROP_MAX_VALUE];
+                var len = __system_property_get(prop, value);
+                // NOTE: if we ever will retry on failure, Android also has a "net.dns2".
+                if (len > 0) {
+                    servers.Add (Encoding.UTF8.GetString(value.Take(len).ToArray ()));
+                }
             }
-            return System.Text.Encoding.UTF8.GetString(value);
+            return servers.ToArray ();
 #pragma warning disable 162
 #endif
 #if __IOS__
-            return string.Empty;
+            return servers.ToArray ();
 #pragma warning disable 162
 #endif
             if (System.IO.File.Exists("/etc/resolv.conf"))
@@ -160,15 +166,14 @@ namespace DnDns
                             line = line.Substring(10).Trim();
                             if (!string.IsNullOrEmpty(line))
                             {
-                                sr.Close();
-                                return line;
+                                servers.Add (line);
                             }
                         }
                     }
                     sr.Close();
                 }
             }
-            return string.Empty;
+            return servers.ToArray ();
         }
 
         public static IPAddressCollection DiscoverDnsServerAddresses()

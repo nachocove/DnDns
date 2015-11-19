@@ -45,6 +45,7 @@ using System.Threading.Tasks;
 using DnDns.Enums;
 using DnDns.Records;
 using DnDns.Security;
+using System.Collections.Generic;
 
 namespace DnDns.Query
 {
@@ -153,25 +154,26 @@ namespace DnDns.Query
 			return ms.ToArray();
 		}
 
-        private static string PickDnsServer()
+        private static string[] GetDnsServers()
         {
-            string dnsServer = string.Empty;
+            string[] dnsServers;
 
             // Test for Unix/Linux OS
             if (Tools.IsPlatformLinuxUnix())
             {
                 // NOTE: iOS will fail to find a DNS server. That's okay.
-                dnsServer = Tools.DiscoverUnixDnsServerAddress();
+                dnsServers = Tools.DiscoverUnixDnsServerAddresses();
             }
             else
             {
                 IPAddressCollection dnsServerCollection = Tools.DiscoverDnsServerAddresses();
-                if (dnsServerCollection.Count != 0)
-                {
-                    dnsServer = dnsServerCollection [0].ToString ();
+                var servers = new List<string> ();
+                foreach (var server in dnsServerCollection) {
+                    servers.Add (server.ToString ());
                 }
+                dnsServers = servers.ToArray ();
             }
-            return dnsServer;
+            return dnsServers;
         }
 
         /// <summary>
@@ -201,7 +203,14 @@ namespace DnDns.Query
 
         public DnsQueryResponse Resolve(string host, NsType queryType, NsClass queryClass, ProtocolType protocol, TsigMessageSecurityProvider provider)
         {
-            return Resolve(PickDnsServer(), host, queryType, queryClass, protocol, provider);
+            foreach (var server in GetDnsServers ()) {
+                try {
+                    return Resolve (server, host, queryType, queryClass, protocol, provider);
+                } catch (Exception ex) {
+                    Console.WriteLine (string.Format ("DnsQueryRequest.Resolve: Could not resolve host {0}: {1}", host, ex));
+                }
+            }
+            return null;
         }
 
         /// <summary>
