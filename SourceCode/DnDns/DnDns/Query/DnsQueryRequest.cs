@@ -299,7 +299,7 @@ namespace DnDns.Query
                 _udpClient.Client.ReceiveTimeout = _socketTimeout;
                 _udpClient.Connect(ipep);
                 _udpClient.Send(bDnsQuery, bDnsQuery.Length);
-                recvBytes = _udpClient.Receive(ref ipep);
+                recvBytes = ReceiveResponse(_udpClient, ref ipep);
             }
             finally
             {
@@ -307,6 +307,39 @@ namespace DnDns.Query
                 _udpClient = null;
             }
             return recvBytes;
+        }
+
+        /// <summary>
+        /// Receives the response. Xamarin's code is broken. See https://bugzilla.xamarin.com/show_bug.cgi?id=6057
+        /// </summary>
+        /// <returns>The response.</returns>
+        /// <param name="udpClient">UdpClient instance.</param>
+        /// <param name="remoteEP">Remote EndPoint (ref).</param>
+        byte [] ReceiveResponse (UdpClient udpClient, ref IPEndPoint remoteEP)
+        {
+            var recvBytes = new byte [65536]; // Max. size
+            EndPoint endPoint;
+            if (remoteEP.AddressFamily == AddressFamily.InterNetwork) {
+                endPoint = new IPEndPoint (IPAddress.Any, 0);
+            } else if (remoteEP.AddressFamily == AddressFamily.InterNetworkV6) {
+                endPoint = new IPEndPoint (IPAddress.IPv6Any, 0);
+            } else {
+                throw new ArgumentException ("Wrong network type");
+            }
+            int dataRead = udpClient.Client.ReceiveFrom (recvBytes, ref endPoint);
+            if (dataRead < recvBytes.Length) {
+                recvBytes = CutArray (recvBytes, dataRead);
+            }
+            remoteEP = (IPEndPoint) endPoint;
+            return recvBytes;
+        }
+
+        private byte [] CutArray (byte [] orig, int length)
+        {
+            byte [] newArray = new byte [length];
+            Buffer.BlockCopy (orig, 0, newArray, 0, length);
+
+            return newArray;
         }
 
         private static byte[] ResolveTcp(byte[] bDnsQuery, IPEndPoint ipep)
